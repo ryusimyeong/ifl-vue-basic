@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1. 구구단</title>
+    <!-- vue CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <!-- {{}} 중괄호 두번으로 data 내부의 변수를 렌더링할 수 있다. -->
+      <!-- 중괄호 안에도 JS 식이 가능하다. 예를 들면 사칙연산 -->
+      <div>{{firstNumber}}곱하기 {{secondNumber}}는?</div>
+      <!-- v-on:을 addEventListener로 생각하자 -->
+      <form v-on:submit="onSubmitForm">
+        <!-- v-model -->
+        <!-- input과 data를 연결할 수 있다. -->
+        <!-- 아래는 input 태그의 value와 data.inputValue를 연결한 것 -->
+        <!-- vue는 아래 input태그에 ref를 통해 접근할 수 있다. -->
+        <input type="number" ref="answer" v-model="inputValue" />
+        <button type="submit">입력</button>
+      </form>
+      <div id="result">{{result}}</div>
+    </div>
+    <script>
+      const app = new Vue({
+        el: "#root",
+        data: {
+          // Math.random() * 9 는 0이상 9미만의 난수를 발생
+          // Math.ceil() 을 통해 1이상 9이하 정수를 얻는다.
+          firstNumber: Math.ceil(Math.random() * 9),
+          secondNumber: Math.ceil(Math.random() * 9),
+          inputValue: "",
+          result: ""
+        },
+        methods: {
+          onSubmitForm(e) {
+            // form이 기본적으로 행하는 새로고침 방지
+            e.preventDefault();
+            // console.log() 를 사용하여 디버깅 가능
+            // this 안에 data와 methods가 담겨 있다
+            console.log(this);
+            console.log(this.firstNumber, this.secondNumber, this.inputValue);
+            if (
+              this.firstNumber * this.secondNumber ===
+              Number(this.inputValue)
+            ) {
+              this.result = "정답!";
+              // 문제 다시 내기
+              this.firstNumber = Math.ceil(Math.random() * 9);
+              this.secondNumber = Math.ceil(Math.random() * 9);
+              // 입력한 값 비우기
+              this.inputValue = "";
+              // this.$refs.설정한ref이름
+              // 아래와 같이 ref를 붙인 태그에 접근할 수 있다.
+              this.$refs.answer.focus();
+            } else {
+              this.result = "땡!";
+              // 입력한 값 비우기
+              this.inputValue = "";
+              this.$refs.answer.focus();
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

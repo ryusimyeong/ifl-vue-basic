@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>02.끝말잇기</title>
+  </head>
+  <body>
+    <div id="root">
+      <div>{{word}}</div>
+      <!-- v-on: vue의 addEventListner -->
+      <form v-on:submit="onSubmitForm">
+        <!-- v-model : input태그와 inputValue 연결 -->
+        <!-- ref : vue에서 html 태그 접근 -->
+        <input id="answer" type="text" ref="answer" v-model="inputValue" />
+        <button type="submit">입력</button>
+        <div id="result">{{result}}</div>
+      </form>
+    </div>
+    <script>
+      const app = new Vue({
+        el: "#root",
+        data: {
+          // 초반 제시어 "성수동"
+          word: "성수동",
+          inputValue: "",
+          result: ""
+        },
+        methods: {
+          onSubmitForm(e) {
+            e.preventDefault();
+            if (this.word[this.word.length - 1] === this.inputValue[0]) {
+              this.result = "정답!";
+              this.word = this.inputValue; // 입력한 값을 제시어로
+              this.inputValue = ""; // input 태그 비우기
+              this.$refs.answer.focus(); // ref에 접근하기
+            } else {
+              this.result = "땡";
+              this.inputValue = ""; // input 태그 비우기
+              this.$refs.answer.focus();
+            }
+          }
+        }
+      });
+      // 화면 시작 시 input 태그에 focus
+      document.querySelector("#answer").focus();
+    </script>
+  </body>
+</html>

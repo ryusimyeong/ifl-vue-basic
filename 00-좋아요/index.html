@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- vue CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>
+      좋아요
+    </title>
+  </head>
+  <body>
+    <div id="root">
+      <!-- 'v-' vue가 통제하는 속성들 -->
+      <!-- 아래의 liked는 data 내부의 liked -->
+      <div v-if="liked">좋아요 눌렀음</div>
+      <!-- v-on:click 클릭 이벤트 연결 -->
+      <button v-else v-on:click="onClickButton">좋아요</button>
+    </div>
+  </body>
+  <script>
+    // 여기서 app은 Vue의 인스턴스
+    const app = new Vue({
+      // 제어할 요소 선택
+      // 어떤 부분이 바뀌는지, 그걸 데이터로 관리하는 게 가장 중요하다.
+      el: "#root",
+      data: {
+        liked: false
+      },
+      methods: {
+        onClickButton() {
+          // 여기서 this는 위의 data
+          this.liked = true;
+        }
+      }
+    });
+  </script>
+</html>

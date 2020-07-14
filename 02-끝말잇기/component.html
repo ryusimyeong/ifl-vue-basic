@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>02.끝말잇기-컴포넌트</title>
+  </head>
+  <body>
+    <div id="root">
+      <!-- word-relay 컴포넌트에 startWord라는 props를 전달 -->
+      <!-- vue는 케밥 케이스로 작성한다. -->
+      <word-relay start-word="성수"></word-relay>
+      <word-relay start-word="뚝섬"></word-relay>
+      <word-relay start-word="혜화"></word-relay>
+    </div>
+    <script>
+      // 현재 아래 컴포넌트는 전역 컴포넌트.
+      // 아래 컴포넌트 이름을 wordRelay로 해도 된다.
+      Vue.component("word-relay", {
+        template: `
+        <div>
+          <div>{{word}}</div>
+          <form v-on:submit="onSubmitForm">
+            <input id="answer" type="text" ref="answer" v-model="inputValue" />
+            <button type="submit">입력</button>
+          </form>
+          <div id="result">{{result}}</div>
+        </div>
+        `,
+        // props 받기
+        // vue html에서 케밥케이스로 작성했지만 자바스크립트에선 카멜케이스로 자동으로 변한다.
+        // 자바스크립트에서 변수명에 -를 사용할 수 없기 때문
+        props: ["startWord"],
+        data() {
+          return {
+            // props에 접근하기
+            word: this.startWord,
+            inputValue: "",
+            result: ""
+          };
+        },
+        methods: {
+          onSubmitForm(e) {
+            e.preventDefault();
+            if (this.word[this.word.length - 1] === this.inputValue[0]) {
+              this.result = "정답!";
+              this.word = this.inputValue;
+              this.inputValue = "";
+              this.$refs.answer.focus();
+            } else {
+              this.result = "땡";
+              this.inputValue = "";
+              this.$refs.answer.focus();
+            }
+          }
+        }
+      });
+    </script>
+    <script>
+      const app = new Vue({
+        el: "#root"
+      });
+    </script>
+  </body>
+</html>
